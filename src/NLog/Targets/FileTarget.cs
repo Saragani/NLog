@@ -384,23 +384,22 @@ namespace NLog.Targets
         /// <docgen category='Archival Options' order='50' />
         [Obsolete("Instead use ArchiveSuffixFormat. Marked obsolete with NLog 6.0")]
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public string ArchiveNumbering
+        public ArchiveNumberingMode ArchiveNumbering
         {
-            get => _archiveNumbering ?? "Sequence";
+            get => _archiveNumbering ?? ArchiveNumberingMode.Sequence;
             set
             {
-                var archiveNumbering = value?.Trim() ?? string.Empty;
-                if (string.IsNullOrEmpty(archiveNumbering) || string.Equals(_archiveNumbering, archiveNumbering, StringComparison.OrdinalIgnoreCase))
+                if (_archiveNumbering == value)
                     return;
 
-                _archiveNumbering = archiveNumbering;
+                _archiveNumbering = value;
                 if (_archiveSuffixFormat is null || ReferenceEquals(_archiveSuffixFormat, _legacyDateArchiveSuffixFormat) || ReferenceEquals(_archiveSuffixFormat, _legacySequenceArchiveSuffixFormat))
                 {
-                    ArchiveSuffixFormat = archiveNumbering.IndexOf("date", StringComparison.OrdinalIgnoreCase) >= 0 ? _legacyDateArchiveSuffixFormat : _legacySequenceArchiveSuffixFormat;
+                    ArchiveSuffixFormat = (value == ArchiveNumberingMode.Date || value == ArchiveNumberingMode.DateAndSequence) ? _legacyDateArchiveSuffixFormat : _legacySequenceArchiveSuffixFormat;
                 }
             }
         }
-        private string? _archiveNumbering;
+        private ArchiveNumberingMode? _archiveNumbering;
 
         /// <summary>
         /// Gets or sets the format-string to convert archive sequence-number by using string.Format

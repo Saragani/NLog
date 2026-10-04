@@ -62,6 +62,7 @@ For all config options and platform support, check https://nlog-project.org/conf
 
     <SignAssembly>true</SignAssembly>
     <AssemblyVersion>6.0.0.0</AssemblyVersion>
+    <AssemblyVersion Condition=" '$(NLogLegacyAssemblyVersion)' == 'true' ">4.0.0.0</AssemblyVersion>
     <AssemblyOriginatorKeyFile>..\NLog.snk</AssemblyOriginatorKeyFile>
     <PublicSign Condition=" '$(OS)' != 'Windows_NT' ">true</PublicSign>
 
